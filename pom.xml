@@ -46,6 +46,7 @@
 							<artifacts>
 								<artifact>
 									<id>org.yaml:snakeyaml:1.15</id>
+									<source>true</source>
 								</artifact>
 							</artifacts>
 						</configuration>
@@ -109,11 +110,6 @@
 								<property name="dist.full.version"
 									value="${unqualifiedVersion}.${buildQualifier}" />
 
-								<property name="dist.file.name"
-									value="${dist.project}-${dist.full.version}-updatesite.zip" />
-								<property name="dist.full.path"
-									value="${site.target.dir}/repository/${dist.file.name}" />
-
 								<delete file="${dist.full.path}" />
 								<zip zipfile="${dist.full.path}" filesonly="true">
 									<zipfileset dir="${site.target.dir}/repository">
@@ -121,12 +117,15 @@
 										<exclude name="**/*.gz" />
 									</zipfileset>
 								</zip>
-								<checksum file="${dist.full.path}" algorithm="SHA1"
-									fileext=".sha1" />
-								<checksum file="${dist.full.path}" algorithm="MD5"
-									fileext=".md5" />
 
-								<!-- 
+								<echo messsage="dist.accessKey=${dist.accessKey}"/>
+								<echo messsage="dist.bucket=${dist.bucket}"/>
+								<echo messsage="dist.path=${dist.path}"/>
+
+								<!-- !!! don't turn stuff below on unless you are really sure all that
+								  paths / names are correct !!! 
+								
+								
 								<s3 accessKey="${dist.accessKey}" secretKey="${dist.secretKey}">
 
 									<delete bucketName="${dist.bucket}">
@@ -146,14 +145,6 @@
 											<include name="**" />
 											<exclude name="*.zip" />
 										</fileset>
-									</upload>
-
-									<upload bucketName="${dist.bucket}" file="${dist.full.path}"
-										toFile="${dist.path}/${dist.file.name}" publicRead="true">
-										<metadata name="project.name" value="${dist.name}" />
-										<metadata name="release.type" value="${dist.type}" />
-										<metadata name="bundle.version" value="${dist.full.version}" />
-										<metadata name="package.file.name" value="${dist.file.name}" />
 									</upload>
 								</s3>
 								-->
