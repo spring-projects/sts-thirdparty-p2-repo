@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.reficio.rcp</groupId>
+	<artifactId>example-p2-site</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0.0</version>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.reficio</groupId>
+				<artifactId>p2-maven-plugin</artifactId>
+				<version>1.2.0-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<!-- QUICK-START EXAMPLE -->
+						<!-- This is the default quick-start configuration. Expected behavior: 
+							- specified dependencies will be fetched - transitive dependencies will be 
+							fetched (no default exclusions) - jars containing source source code will 
+							NOT be fetched - jars that are NOT OSGi bundles will be "bundled" using bnd 
+							tool, if you specify instructions for these jars they will be APPLIED - jars 
+							that are OSGi bundles will be simply included if you specify instructions 
+							for these jars they will be IGNORED (see <override> option) - p2 site will 
+							be generated How the instructions works: - instructions are applied only 
+							to the root artifact that you specify! - instructions are not applied to 
+							the TRANSITIVE dependencies! - transitive dependencies are never overridden 
+							(see <override> option) - transitive dependencies are bundled using the default 
+							instructions: <instructions> <Import-Package>*;resolution:=optional</Import-Package> 
+							<Export-Package>*</Export-Package> </instructions> - other instructions, 
+							such as, Bundle-SymbolicName, Bundle-Name, Bundle-Version, etc. are calculated 
+							according to the following rules: http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html 
+							- if you specify any instructions they will be applied only if the jar is 
+							not already an OSGi bundle - otherwise you have to use the override option 
+							- please see the /examples/override/pom.xml example The following definition 
+							of an artifact: <artifact> <id>commons-io:commons-io:2.1</id> </artifact> 
+							is an equivalent of the following definition: <artifact> <id>commons-io:commons-io:2.1</id> 
+							<transitive>true</transitive> <source>false</source> <override>false</override> 
+							<instructions> <Import-Package>*;resolution:=optional</Import-Package> <Export-Package>*</Export-Package> 
+							</instructions> <excludes/> </artifact> To run the example please invoke: 
+							mvn p2:site -->
+						<configuration>
+							<artifacts>
+								<artifact>
+									<id>org.yaml:snakeyaml:1.15</id>
+								</artifact>
+							</artifacts>
+						</configuration>
+
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- skip deploy step, we have our own ant-stuffs to upload site to s3 -->
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<!-- This serves the update site via jetty <plugin> <groupId>org.mortbay.jetty</groupId> 
+				<artifactId>jetty-maven-plugin</artifactId> <version>8.1.5.v20120716</version> 
+				<configuration> <scanIntervalSeconds>10</scanIntervalSeconds> <webAppSourceDirectory>${basedir}/target/repository/</webAppSourceDirectory> 
+				<webApp> <contextPath>/site</contextPath> </webApp> </configuration> </plugin> -->
+				
+				
+				
+	<!-- all the stuff below is for uploading the site to S3 from a CI build -->
+		<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-2</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<quiet>true</quiet>
+							<files>
+								<file>${dist.properties}</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.6</version>
+				<executions>
+					<execution>
+						<id>upload-dist</id>
+						<phase>deploy</phase>
+						<configuration>
+							<target>
+
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+								<taskdef resource="org/springframework/build/aws/ant/antlib.xml" />
+
+								<property name="site.target.dir" value="${project.build.directory}" />
+								<property name="dist.full.version"
+									value="${unqualifiedVersion}.${buildQualifier}" />
+
+								<property name="dist.file.name"
+									value="${dist.project}-${dist.full.version}-updatesite.zip" />
+								<property name="dist.full.path"
+									value="${site.target.dir}/repository/${dist.file.name}" />
+
+								<delete file="${dist.full.path}" />
+								<zip zipfile="${dist.full.path}" filesonly="true">
+									<zipfileset dir="${site.target.dir}/repository">
+										<exclude name="*.zip" />
+										<exclude name="**/*.gz" />
+									</zipfileset>
+								</zip>
+								<checksum file="${dist.full.path}" algorithm="SHA1"
+									fileext=".sha1" />
+								<checksum file="${dist.full.path}" algorithm="MD5"
+									fileext=".md5" />
+
+								<!-- 
+								<s3 accessKey="${dist.accessKey}" secretKey="${dist.secretKey}">
+
+									<delete bucketName="${dist.bucket}">
+										<fileset dir="${dist.path}">
+											<include name="category.xml" />
+											<include name="content.jar" />
+											<include name="artifacts.jar" />
+											<include name="plugins/**" />
+											<include name="features/**" />
+										</fileset>
+									</delete>
+
+									<upload bucketName="${dist.bucket}" toDir="${dist.path}"
+										publicRead="true">
+										<fileset dir="${site.target.dir}/repository">
+											<include name="**/*" />
+											<include name="**" />
+											<exclude name="*.zip" />
+										</fileset>
+									</upload>
+
+									<upload bucketName="${dist.bucket}" file="${dist.full.path}"
+										toFile="${dist.path}/${dist.file.name}" publicRead="true">
+										<metadata name="project.name" value="${dist.name}" />
+										<metadata name="release.type" value="${dist.type}" />
+										<metadata name="bundle.version" value="${dist.full.version}" />
+										<metadata name="package.file.name" value="${dist.file.name}" />
+									</upload>
+								</s3>
+								-->
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.build</groupId>
+						<artifactId>org.springframework.build.aws.ant</artifactId>
+						<version>3.0.6.RELEASE</version>
+					</dependency>
+					<dependency>
+						<groupId>net.java.dev.jets3t</groupId>
+						<artifactId>jets3t</artifactId>
+						<version>0.8.1</version>
+					</dependency>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>20020829</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+				
+		</plugins>
+	</build>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>reficio</id>
+			<url>http://repo.reficio.org/maven/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+
+
+</project>
+
+
+
+
