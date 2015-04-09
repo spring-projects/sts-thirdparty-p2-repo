@@ -25,6 +25,14 @@
 						<configuration>
 							<artifacts>
 								<artifact>
+									<id>org.yaml:snakeyaml:1.13</id>
+									<source>true</source>
+								</artifact>
+								<artifact>
+									<id>org.yaml:snakeyaml:1.14</id>
+									<source>true</source>
+								</artifact>
+								<artifact>
 									<id>org.yaml:snakeyaml:1.15</id>
 									<source>true</source>
 								</artifact>
