@@ -81,9 +81,9 @@
 
 								<property name="site.target.dir" value="${project.build.directory}" />
 
-								<echo messsage="dist.accessKey=${dist.accessKey}"/>
-								<echo messsage="dist.bucket=${dist.bucket}"/>
-								<echo messsage="dist.path=${dist.path}"/>
+								<echo message="dist.accessKey=${dist.accessKey}"/>
+								<echo message="dist.bucket=${dist.bucket}"/>
+								<echo message="dist.path=${dist.path}"/>
 
 								<!-- !!! don't turn stuff below on unless you are really sure all that
 								  paths / names are correct !!! 
