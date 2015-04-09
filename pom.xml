@@ -86,7 +86,7 @@
 								<echo message="dist.path=${dist.path}"/>
 
 								<!-- !!! don't turn stuff below on unless you are really sure all that
-								  paths / names are correct !!! 
+								  paths / names are correct !!! -->
 								
 								
 								<s3 accessKey="${dist.accessKey}" secretKey="${dist.secretKey}">
@@ -110,7 +110,6 @@
 										</fileset>
 									</upload>
 								</s3>
-								-->
 							</target>
 						</configuration>
 						<goals>
