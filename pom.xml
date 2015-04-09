@@ -30,7 +30,8 @@
 								</artifact>
 							</artifacts>
 						</configuration>
-
+						<goals><goal>site</goal></goals>
+						<phase>package</phase>
 					</execution>
 				</executions>
 			</plugin>
@@ -43,101 +44,115 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
-
-	<!-- all the stuff below is for uploading the site to S3 from a CI build -->
-		<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<version>1.0-alpha-2</version>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-						<configuration>
-							<quiet>true</quiet>
-							<files>
-								<file>${dist.properties}</file>
-							</files>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.6</version>
-				<executions>
-					<execution>
-						<id>upload-dist</id>
-						<phase>deploy</phase>
-						<configuration>
-							<target>
-
-								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-								<taskdef resource="org/springframework/build/aws/ant/antlib.xml" />
-
-								<property name="site.target.dir" value="${project.build.directory}" />
-
-								<echo message="dist.accessKey=${dist.accessKey}"/>
-								<echo message="dist.bucket=${dist.bucket}"/>
-								<echo message="dist.path=${dist.path}"/>
-
-								<!-- !!! don't turn stuff below on unless you are really sure all that
-								  paths / names are correct !!! -->
-								
-								
-								<s3 accessKey="${dist.accessKey}" secretKey="${dist.secretKey}">
-
-									<delete bucketName="${dist.bucket}">
-										<fileset dir="${dist.path}">
-											<include name="category.xml" />
-											<include name="content.jar" />
-											<include name="artifacts.jar" />
-											<include name="plugins/**" />
-											<include name="features/**" />
-										</fileset>
-									</delete>
-
-									<upload bucketName="${dist.bucket}" toDir="${dist.path}"
-										publicRead="true">
-										<fileset dir="${site.target.dir}/repository">
-											<include name="**/*" />
-											<include name="**" />
-											<exclude name="*.zip" />
-										</fileset>
-									</upload>
-								</s3>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>org.springframework.build</groupId>
-						<artifactId>org.springframework.build.aws.ant</artifactId>
-						<version>3.0.6.RELEASE</version>
-					</dependency>
-					<dependency>
-						<groupId>net.java.dev.jets3t</groupId>
-						<artifactId>jets3t</artifactId>
-						<version>0.8.1</version>
-					</dependency>
-					<dependency>
-						<groupId>ant-contrib</groupId>
-						<artifactId>ant-contrib</artifactId>
-						<version>20020829</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-				
 		</plugins>
 	</build>
+	
+	<!-- all the stuff below is for uploading the site to S3 from a CI build -->
+	<profiles>
+		<profile>
+			<id>bamboo</id>
+			<activation>
+				<property>
+					<name>dist.properties</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+						<version>1.0-alpha-2</version>
+						<executions>
+							<execution>
+								<phase>initialize</phase>
+								<goals>
+									<goal>read-project-properties</goal>
+								</goals>
+								<configuration>
+									<quiet>true</quiet>
+									<files>
+										<file>${dist.properties}</file>
+									</files>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>upload-dist</id>
+								<phase>deploy</phase>
+								<configuration>
+									<target>
+
+										<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+										<taskdef resource="org/springframework/build/aws/ant/antlib.xml" />
+
+										<property name="site.target.dir" value="${project.build.directory}" />
+
+										<echo message="dist.accessKey=${dist.accessKey}" />
+										<echo message="dist.bucket=${dist.bucket}" />
+										<echo message="dist.path=${dist.path}" />
+
+										<!-- !!! don't turn stuff below on unless you are really sure all 
+											that paths / names are correct !!! -->
+
+
+										<s3 accessKey="${dist.accessKey}" secretKey="${dist.secretKey}">
+
+											<delete bucketName="${dist.bucket}">
+												<fileset dir="${dist.path}">
+													<include name="category.xml" />
+													<include name="content.jar" />
+													<include name="artifacts.jar" />
+													<include name="plugins/**" />
+													<include name="features/**" />
+												</fileset>
+											</delete>
+
+											<upload bucketName="${dist.bucket}" toDir="${dist.path}"
+												publicRead="true">
+												<fileset dir="${site.target.dir}/repository">
+													<include name="**/*" />
+													<include name="**" />
+													<exclude name="*.zip" />
+												</fileset>
+											</upload>
+										</s3>
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.springframework.build</groupId>
+								<artifactId>org.springframework.build.aws.ant</artifactId>
+								<version>3.0.6.RELEASE</version>
+							</dependency>
+							<dependency>
+								<groupId>net.java.dev.jets3t</groupId>
+								<artifactId>jets3t</artifactId>
+								<version>0.8.1</version>
+							</dependency>
+							<dependency>
+								<groupId>ant-contrib</groupId>
+								<artifactId>ant-contrib</artifactId>
+								<version>20020829</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<pluginRepositories>
 		<pluginRepository>
@@ -152,11 +167,5 @@
 		</pluginRepository>
 		
 	</pluginRepositories>
-
-
-
 </project>
-
-
-
 
