@@ -11,6 +11,11 @@
 	<properties>
 	   <dist.bucket>dist.springsource.com</dist.bucket>
 	   <dist.path>release/TOOLS/third-party/misc-p2-repo</dist.path>
+
+	   <!-- Signing -->
+	   <signing.skip>true</signing.skip>
+	   <signing.alias>pivotal</signing.alias>
+	   <signing.keystore>~/.keytool/pivotal.jks</signing.keystore>
 	</properties>
 
 	<build>
@@ -22,6 +27,10 @@
 				<executions>
 					<execution>
 						<id>default-cli</id>
+						<phase>package</phase>
+						<goals>
+							<goal>site</goal>
+						</goals>
 						<configuration>
 							<artifacts>
 								<artifact>
@@ -38,8 +47,6 @@
 								</artifact>
 							</artifacts>
 						</configuration>
-						<goals><goal>site</goal></goals>
-						<phase>package</phase>
 					</execution>
 				</executions>
 			</plugin>
@@ -52,6 +59,32 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<skip>${signing.skip}</skip>
+					<alias>${signing.alias}</alias>
+					<keystore>${signing.keystore}</keystore>
+					<storepass>${signing.store.password}</storepass>
+					<keypass>${signing.key.password}</keypass>
+					<arguments>
+						<argument>-sigalg</argument><argument>SHA1withRSA</argument>
+						<argument>-digestalg</argument><argument>SHA1</argument>
+					</arguments>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 	
@@ -160,6 +193,15 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		<profile>
+			<id>bamboo-signing</id>
+			<properties>
+				<signing.store.password>${env.bamboo_signing_store_password}</signing.store.password>
+				<signing.key.password>${env.bamboo_signing_store_password}</signing.key.password>
+			</properties>
+		</profile>
+
 	</profiles>
 
 	<pluginRepositories>
