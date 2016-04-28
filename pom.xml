@@ -33,6 +33,35 @@
 						</goals>
 						<configuration>
 							<artifacts>
+							    <artifact>
+							        <id>io.projectreactor:reactor-core:2.5.0.M3</id>
+							        <override>true</override>
+							        <source>true</source>
+								</artifact>
+<!--
+							    <artifact>
+							        <id>org.cloudfoundry:cloudfoundry-client-spring:2.0.0.M1</id>
+							        <source>true</source>
+								</artifact>
+							    <artifact>
+							        <id>org.cloudfoundry:cloudfoundry-operations:2.0.0.M1</id>
+							        <source>true</source>
+								</artifact>
+							    <artifact>
+							        <id>org.springframework:spring-beans:4.2.5.RELEASE</id>
+							        <source>true</source>
+								</artifact>
+							    <artifact>
+							        <id>org.springframework.security:spring-security-core:3.2.8.RELEASE</id>
+							        <override>true</override>
+							        <source>true</source>
+								</artifact>
+							    <artifact>
+							        <id>org.springframework.security:spring-security-config:3.2.8.RELEASE</id>
+							        <override>true</override>
+							        <source>true</source>
+								</artifact>
+								
 								<artifact>
 									<id>org.yaml:snakeyaml:1.13</id>
 									<source>true</source>
@@ -44,8 +73,8 @@
 								<artifact>
 									<id>org.yaml:snakeyaml:1.15</id>
 									<source>true</source>
-								</artifact>
-							</artifacts>
+								</artifact>-->
+							</artifacts> 
 						</configuration>
 					</execution>
 				</executions>
@@ -217,5 +246,12 @@
 		</pluginRepository>
 		
 	</pluginRepositories>
+	<repositories>
+	    <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>http://repo.spring.io/milestone</url>
+        </repository>
+	</repositories>
 </project>
 
