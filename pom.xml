@@ -34,8 +34,8 @@
 						<configuration>
 							<artifacts>
 							    <artifact>
-							        <id>io.projectreactor:reactor-core:2.5.0.M3</id>
-							        <override>true</override>
+							        <id>io.projectreactor:reactor-core:2.5.0.BUILD-SNAPSHOT</id>
+							        <override>false</override>
 							        <source>true</source>
 								</artifact>
 <!--
@@ -252,6 +252,12 @@
             <name>Spring Milestones</name>
             <url>http://repo.spring.io/milestone</url>
         </repository>
+	    <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Milestones</name>
+            <url>http://repo.spring.io/snapshot</url>
+            <snapshots><enabled>true</enabled></snapshots>
+         </repository>
 	</repositories>
 </project>
 
