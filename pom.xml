@@ -34,7 +34,7 @@
 						<configuration>
 							<artifacts>
 							    <artifact>
-							        <id>io.projectreactor:reactor-core:2.5.0.M4</id>
+							        <id>io.projectreactor:reactor-core:2.5.0.BUILD-SNAPSHOT</id>
 							        <override>true</override>
 							        <source>true</source>
 								</artifact>
