@@ -37,6 +37,9 @@
 							        <id>io.projectreactor:reactor-core:2.5.0.BUILD-SNAPSHOT</id>
 							        <override>true</override>
 							        <source>true</source>
+							        <instructions>
+                                        <Bundle-Version>2.5.0.M5-${maven.build.timestamp}</Bundle-Version>
+							        </instructions>
 								</artifact>
 <!--
 							    <artifact>
