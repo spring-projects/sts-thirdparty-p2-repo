@@ -11,6 +11,7 @@
 	<properties>
 	   <dist.bucket>dist.springsource.com</dist.bucket>
 	   <dist.path>release/TOOLS/third-party/misc-p2-repo</dist.path>
+	   <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
 
 	   <!-- Signing -->
 	   <signing.skip>true</signing.skip>
