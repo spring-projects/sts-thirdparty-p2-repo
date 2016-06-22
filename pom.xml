@@ -38,7 +38,7 @@
 							        <override>true</override>
 							        <source>true</source>
 							        <instructions>
-                                        <Bundle-Version>2.5.0.M5-${maven.build.timestamp}</Bundle-Version>
+                                        <Bundle-Version>2.5.0.M5-BUILD-${maven.build.timestamp}</Bundle-Version>
 							        </instructions>
 								</artifact>
 <!--
