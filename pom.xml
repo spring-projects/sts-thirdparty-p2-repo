@@ -35,11 +35,11 @@
 						<configuration>
 							<artifacts>
 							    <artifact>
-							        <id>io.projectreactor:reactor-core:3.0.0.RC1</id>
+							        <id>io.projectreactor:reactor-core:3.0.0.RC2</id>
 							        <override>true</override>
 							        <source>true</source>
 							        <instructions>
-                                        <Bundle-Version>3.0.0.${maven.build.timestamp}-RC1</Bundle-Version>
+                                        <Bundle-Version>3.0.0.${maven.build.timestamp}-RC2</Bundle-Version>
 							        </instructions>
 								</artifact>
 <!--
@@ -285,7 +285,15 @@
 	</pluginRepositories>
 	
 	<repositories>
-	    <repository>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>http://repo.spring.io/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
             <url>http://repo.spring.io/milestone</url>
