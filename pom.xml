@@ -35,11 +35,11 @@
 						<configuration>
 							<artifacts>
 							    <artifact>
-							        <id>io.projectreactor:reactor-core:3.0.0.RC2</id>
+							        <id>io.projectreactor:reactor-core:3.0.0.RELEASE</id>
 							        <override>true</override>
 							        <source>true</source>
 							        <instructions>
-                                        <Bundle-Version>3.0.0.${maven.build.timestamp}-RC2</Bundle-Version>
+                                        <Bundle-Version>3.0.0.${maven.build.timestamp}-RELEASE</Bundle-Version>
 							        </instructions>
 								</artifact>
 <!--
