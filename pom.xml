@@ -35,11 +35,11 @@
 						<configuration>
 							<artifacts>
 							    <artifact>
-							        <id>io.projectreactor:reactor-core:3.0.2.RELEASE</id>
+							        <id>io.projectreactor:reactor-core:3.0.3.BUILD-SNAPSHOT</id>
 							        <override>true</override>
 							        <source>true</source>
 							        <instructions>
-                                        <Bundle-Version>3.0.2.${maven.build.timestamp}-RELEASE</Bundle-Version>
+                                        <Bundle-Version>3.0.3.${maven.build.timestamp}-BUILD-SNAPSHOT</Bundle-Version>
 							        </instructions>
 								</artifact>
 <!--
