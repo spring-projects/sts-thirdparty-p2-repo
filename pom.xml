@@ -22,9 +22,9 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.reficio</groupId>
-				<artifactId>p2-maven-plugin</artifactId>
-				<version>1.2.0-SNAPSHOT</version>
+    			<groupId>org.reficio</groupId>
+    			<artifactId>p2-maven-plugin</artifactId>
+    			<version>1.2.0</version>
 				<executions>
 					<execution>
 						<id>default-cli</id>
@@ -41,6 +41,10 @@
 							        <instructions>
                                         <Bundle-Version>3.0.5.${maven.build.timestamp}-RELEASE</Bundle-Version>
 							        </instructions>
+								</artifact>
+							    <artifact>
+							        <id>com.github.zafarkhaja:java-semver:0.9.0</id>
+							        <source>true</source>
 								</artifact>
 <!--
 							    <artifact>
