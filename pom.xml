@@ -43,6 +43,10 @@
 							        </instructions>
 								</artifact>
 							    <artifact>
+							        <id>com.hierynomus:sshj:0.24.0</id>
+							        <source>true</source>
+								</artifact>
+							    <artifact>
 							        <id>com.github.zafarkhaja:java-semver:0.9.0</id>
 							        <source>true</source>
 								</artifact>
