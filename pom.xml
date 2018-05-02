@@ -47,6 +47,16 @@
 							        <source>true</source>
 								</artifact>
 							    <artifact>
+							        <id>org.bouncycastle:bcprov-jdk15on:1.57</id>
+							        <source>true</source>
+							        <override>true</override> <!-- looks like original jar is osgi but its packaging has stuff tycho doesn not like -->
+								</artifact>
+							    <artifact>
+							        <id>org.bouncycastle:bcpkix-jdk15on:1.57</id>
+							        <source>true</source>
+							        <override>true</override> <!-- looks like original jar is osgi but its packaging has stuff tycho doesn not like -->
+								</artifact>
+							    <artifact>
 							        <id>com.github.zafarkhaja:java-semver:0.9.0</id>
 							        <source>true</source>
 								</artifact>
@@ -179,8 +189,6 @@
 											<path>
 												<fileset dir="${repo.dir}/plugins">
 													<include name="**/*.jar"/>
-													<exclude name="**/bcpkix_*.jar"/> <!-- don't sign! Already signed -->
-													<exclude name="**/bcprov_*.jar"/> <!-- don't sign! Already signed -->
 												</fileset>
 											</path>
 										</signjar>
