@@ -177,7 +177,11 @@
 											sigalg="SHA1withRSA"
 											digestalg="SHA1">
 											<path>
-												<fileset dir="${repo.dir}/plugins" includes="**/*.jar" />
+												<fileset dir="${repo.dir}/plugins">
+													<include name="**/*.jar"/>
+													<exclude name="**/bcpkix_*.jar"/> <!-- don't sign! Already signed -->
+													<exclude name="**/bcprov_*.jar"/> <!-- don't sign! Already signed -->
+												</fileset>
 											</path>
 										</signjar>
 
