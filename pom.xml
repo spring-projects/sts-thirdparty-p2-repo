@@ -44,9 +44,6 @@
 								</artifact>
 							    <artifact>
 							        <id>com.hierynomus:sshj:0.24.0</id>
-							        <instructions>
-                                        <Bundle-Version>0.24.0.${maven.build.timestamp}-RELEASE</Bundle-Version>
-							        </instructions>
 							        <source>true</source>
 								</artifact>
 							    <artifact>
@@ -202,7 +199,7 @@
 											</path>
 										</signjar>
 
-										<!-- delete p2 repo metadata, since that is no longer valid after signing, needs to be re-created 
+										delete p2 repo metadata, since that is no longer valid after signing, needs to be re-created 
 										<delete file="${repo.dir}/content.jar"/>
 										<delete file="${repo.dir}/artifacts.jar"/>
 										
