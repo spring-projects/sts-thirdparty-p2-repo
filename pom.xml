@@ -35,11 +35,11 @@
 						<configuration>
 							<artifacts>
 							    <artifact>
-							        <id>io.projectreactor:reactor-core:3.1.5.RELEASE</id>
+							        <id>io.projectreactor:reactor-core:3.1.9.RELEASE</id>
 							        <override>true</override>
 							        <source>true</source>
 							        <instructions>
-                                        <Bundle-Version>3.1.5.${maven.build.timestamp}-RELEASE</Bundle-Version>
+                                        <Bundle-Version>3.1.9.${maven.build.timestamp}-RELEASE</Bundle-Version>
 							        </instructions>
 								</artifact>
 							    <artifact>
