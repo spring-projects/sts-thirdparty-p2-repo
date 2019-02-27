@@ -308,14 +308,14 @@
 
 		<pluginRepository>
 			<id>reficio</id>
-			<url>http://repo.reficio.org/maven/</url>
+			<url>https://repo.reficio.org/maven/</url>
 		</pluginRepository>
 		<!-- required for Maven and Ant AWS dependency -->
 		
 		<pluginRepository>
 			<id>springsource-maven-release</id>
 			<name>SpringSource Maven Release Repository</name>
-			<url>http://repository.springsource.com/maven/bundles/release</url>
+			<url>https://repository.springsource.com/maven/bundles/release</url>
 		</pluginRepository>
 		
 	</pluginRepositories>
@@ -324,18 +324,18 @@
         <repository>
             <id>spring-releases</id>
             <name>Spring Releases</name>
-            <url>http://repo.spring.io/release</url>
+            <url>https://repo.spring.io/release</url>
             <snapshots><enabled>false</enabled></snapshots>
         </repository>
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
-            <url>http://repo.spring.io/milestone</url>
+            <url>https://repo.spring.io/milestone</url>
         </repository>
 	    <repository>
             <id>spring-snapshots</id>
             <name>Spring Milestones</name>
-            <url>http://repo.spring.io/snapshot</url>
+            <url>https://repo.spring.io/snapshot</url>
             <snapshots><enabled>true</enabled></snapshots>
          </repository>
 	</repositories>
