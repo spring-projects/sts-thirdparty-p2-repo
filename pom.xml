@@ -15,8 +15,10 @@
 	   <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
 	   <!-- Signing -->
 	   <signing.skip>true</signing.skip>
-	   <signing.alias>pivotal</signing.alias>
-	   <signing.keystore>~/.keytool/pivotal.jks</signing.keystore>
+
+	   <dist.accessKey>${env.bamboo_vault_tools_s3_accesskey_password}</dist.accessKey>
+	   <dist.secretKey>${env.bamboo_vault_tools_s3_secretkey_password}</dist.secretKey>
+
 	</properties>
 
 	<build>
@@ -133,34 +135,16 @@
 	<profiles>
 		<profile>
 			<id>bamboo</id>
-			<activation>
-				<property>
-					<name>dist.properties</name>
-				</property>
-			</activation>
+
+			<properties>
+				<signing.store.password>${env.bamboo_vault_signing_passphrase}</signing.store.password>
+				<signing.key.password>${env.bamboo_vault_signing_passphrase}</signing.key.password>
+			</properties>
+
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>properties-maven-plugin</artifactId>
-						<version>1.0-alpha-2</version>
-						<executions>
-							<execution>
-								<phase>initialize</phase>
-								<goals>
-									<goal>read-project-properties</goal>
-								</goals>
-								<configuration>
-									<quiet>true</quiet>
-									<files>
-										<file>${dist.properties}</file>
-									</files>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
 
-			        <plugin>
+					<plugin>
 			            <groupId>org.eclipse.tycho.extras</groupId>
 			            <artifactId>tycho-p2-extras-plugin</artifactId>
 			            <version>0.25.0</version>
@@ -290,14 +274,6 @@
 			</build>
 		</profile>
 		
-		<profile>
-			<id>bamboo-signing</id>
-			<properties>
-				<signing.store.password>${env.bamboo_signing_store_password}</signing.store.password>
-				<signing.key.password>${env.bamboo_signing_store_password}</signing.key.password>
-			</properties>
-		</profile>
-
 	</profiles>
 
 	<pluginRepositories>
@@ -340,4 +316,3 @@
          </repository>
 	</repositories>
 </project>
-
