@@ -183,8 +183,8 @@
 										<signjar
 											alias="${signing.alias}" keystore="${signing.keystore}"
 											storepass="${signing.store.password}"
-											sigalg="SHA1withRSA"
-											digestalg="SHA1">
+											tsaurl="http://timestamp.digicert.com">
+
 											<path>
 												<fileset dir="${repo.dir}/plugins">
 													<include name="**/*.jar"/>
